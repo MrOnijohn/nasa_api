@@ -16,8 +16,8 @@ def welcome():
 @app.get('/asteroids')
 def fetch_asteroids():
     
-    start_date = "2025-08-01"
-    end_date = "2025-08-08"
+    start_date = "2025-08-14"
+    end_date = "2025-08-14"
     
     return fetch_objects(start_date, end_date, API_KEY)
 
