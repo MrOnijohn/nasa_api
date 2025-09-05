@@ -1,0 +1,21 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'europe-north2-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/nasa-api-service:$COMMIT_SHA', '.']
+
+# Push the container image to Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'europe-north2-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/nasa-api-service:$COMMIT_SHA']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:[
+    'run', 'deploy', 'nasa-api-service',
+    '--image', 'europe-north2-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/nasa-api-service:$COMMIT_SHA',
+    '--region', 'europe-north2',
+    '--allow-unauthenticated'
+  ]
+
+images:
+- 'europe-north2-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/nasa-api-service:$COMMIT_SHA'
